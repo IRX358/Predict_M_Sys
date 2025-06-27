@@ -1,0 +1,66 @@
+    <script>
+      const form = document.querySelector('form');
+      const lding = document.getElementById('lding');
+
+      // form.addEventListener('submit',()=>{
+      //   lding.style.display='block';
+      // });
+      //I want the spinner , holding the page for 3s even if it gets loaded faster
+      form.addEventListener('submit',function(event){
+        event.preventDefault(); //Preventing the form from submission and showing animation
+        lding.style.display='block';
+        setTimeout(()=>{form.submit();},3000);//delaying and submitting after 3secs
+      });
+    </script>
+
+pdf generation and individual reporting
+from flask import make_response
+from xhtml2pdf import pisa
+from io import BytesIO
+
+     <div class="col-auto">
+      <a href="{{url_for('generate_pdf',flnm=flnm)}}" target="_blank">
+        <button class="btn btn-primary">Prediction Reports</button>
+      </a>
+    </div>
+
+
+@app.route('/report_pdf/<fliename>')
+def generate_pdf(flnm):
+    # File path
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], flnm)
+    
+    #  CHECK IF FILE EXISTS 
+    if not os.path.exists(filepath):
+        return "File not found."
+
+    #  Dynamically fetch file details
+    file_size = f"{os.path.getsize(filepath) // 1024} KB"
+    file_type = flnm.rsplit('.', 1)[1].upper()
+
+    #  Prediction (fetch from CSV or re-run predict.py) → Example uses subprocess for simplicity
+    result = subprocess.run(['python', 'sample_predictor.py', filepath], capture_output=True, text=True)
+    prediction = result.stdout.strip()
+
+    #  Load model metrics from JSON
+    with open('sample_metrics.json') as f:
+        model_metrics = json.load(f)
+
+    #  Render template → PDF
+    rendered = render_template('report_pg.html',
+                               filename=flnm,
+                               file_type=file_type,
+                               file_size=file_size,
+                               prediction=prediction,
+                               metrics=model_metrics)
+    
+    pdf = BytesIO()
+    pisa_status = pisa.CreatePDF(rendered, dest=pdf)
+    
+    if pisa_status.err:
+        return "Error generating PDF"
+    
+    response = make_response(pdf.getvalue())
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = f'attachment; filename="{flnm}_report.pdf"'
+    return response

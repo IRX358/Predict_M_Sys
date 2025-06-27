@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block bdycon %}
+
+<figure class="text-center">
+  <blockquote class="blockquote">
+    <p class="head">Predictions Report : </p></blockquote>
+    <table class="table table-info table-striped-columns"  style="width: 40vw; height: auto;">
+            <thead>
+                <tr class="table-info" >
+                    <!-- <th class="table-info"  scope="col"># </th> -->
+                    <th class="table-info"  scope="col">Filename </th>
+                    <th class="table-info"  scope="col">Predictions </th>
+                    <th class="table-info"  scope="col">Timestamp </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for eachlog in predicts %}
+                <tr class="table-info" >
+                    {% for vals in eachlog %}
+                    <!-- <th class="table-info"  scope="row">1</th> -->
+                    <td>{{ vals }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+     <div class="col-auto">
+        <a href="/">
+          <button class="btn btn-primary">Go Back to Uploads </button>
+        </a>
+      </div>
+  </blockquote>
+</figure>
+
+    
+{% endblock bdycon %}

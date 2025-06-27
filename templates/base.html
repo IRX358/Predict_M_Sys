@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Predictive Maintenance System</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+        background-color: rgb(171, 192, 255);
+      }
+
+      .head {
+        margin-top: 30px;
+        margin-bottom: 30px;
+        text-decoration: underline blue;
+        text-decoration-style: double;
+        text-underline-offset: 8px;
+      }
+      .h1 {
+        padding-top: 20px;
+      }
+      .col-auto {
+        padding-top: 20px;
+      }
+      .outbox {
+        margin-top: 16vh;
+        padding-bottom: 10vh;
+        width: 60vw;
+        height: auto;
+        border: 5px solid rgb(100, 96, 96);
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 10px;
+        color: aliceblue;
+        background-color: rgb(29, 29, 56);
+        align-items: center;
+      }
+      form{
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      }
+      footer {
+        background-color: #242424;
+        color: #ffff;
+        padding: 2rem ;
+        margin-top: 25vh;
+      }
+
+      .footer-subcon {
+        margin-top: 30px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+      }
+
+      .footer-section h3 {
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+      }
+
+      .footer-section p,
+      .footer-section a {
+        color: #bbb;
+        margin-bottom: 0.5rem;
+        display: block;
+        text-decoration: none;
+      }
+
+      .footer-section a:hover {
+        color: white;
+      }
+
+      .copyright {
+        text-align: center;
+        padding-top: 2rem;
+        margin-top: 2rem;
+        border-top: 1px solid #444;
+        color: #bbb;
+      }
+      button{
+        cursor: pointer;
+      }
+      .table {
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 15px;
+        overflow: hidden;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 40px;
+        border: 3px solid #3e3d3d;
+      } 
+      .alert_style {
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid #d6d8db;
+        border-radius: 4px;
+        margin-top: 10vh;
+        /* Theme-color one */
+        background-color: #d1ecf1;
+        color: #0c5460;
+
+        /* Green-color one
+         background-color: #d4edda;
+        color: #155724;
+        border-color: #c3e6cb; */
+
+        /* Red-color one
+         background-color: #f8d7da;
+        color: #721c24;
+        border-color: #f5c6cb; */
+
+        font-family: sans-serif;
+      }
+      #lding{
+       
+        display: none;
+        position:absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        border: 6px solid #f3f3f3;
+        border-top: 6px solid#007bff;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite ;
+        z-index: 9999;
+      }
+      @keyframes spin {
+        0%{ transform: translate(-50%,-50%) rotate(0deg);}
+        100%{ transform: translate(-50%,-50%) rotate(360deg);}
+        
+      }
+    #instructions-container {
+        position: absolute;
+        top: 120px;
+        right: 20px;
+        width: 150px;
+        z-index: 999;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    #instructions-toggle {
+        width: 100%;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 12px;
+        border-radius: 4px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    #arrow-icon {
+        transition: transform 0.3s ease;
+    }
+
+    #instructions-toggle.active #arrow-icon {
+        transform: rotate(180deg);
+    }
+
+    #instructions-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease;
+        background-color: #f1f1f1;
+        border-radius: 4px;
+        margin-top: 5px;
+        padding: 0 12px;
+    }
+
+    #instructions-content ul {
+        margin: 10px 0;
+        padding-left: 20px;
+        list-style:square;
+        font-size: 13px;
+        color: #333;
+    }
+
+    #instructions-content li {
+        margin-bottom: 8px;
+        font-size: 16px;
+    }
+   
+    </style>
+  </head>
+  <body>
+    <figure class="text-center">
+      <blockquote class="blockquote">
+        <p class="text-muted h1">
+          Welcome to the Predictive Maintenance System
+        </p>
+      </blockquote>
+      <hr class="border border-primary border-3 opacity-75" />
+    </figure>
+    <main style="height: auto">
+      <div class="outbox">{% block bdycon %} {% endblock bdycon %}</div>
+      
+      <!-- The instructions tab -->
+      <div id="instructions-container">
+    <button id="instructions-toggle">
+        <span>Instructions</span>
+        <svg id="arrow-icon" width="20" height="20" viewBox="0 0 24 24">
+            <path d="M6 9l6 6 6-6" fill="none" stroke="white" stroke-width="2" />
+        </svg>
+    </button>
+    <div id="instructions-content">
+        <ul>
+            <li>📂 Upload a PNG or JPG file</li>
+            <li>⏳ Wait for the prediction result</li>
+            <li>✅ Check result or use Try Again if needed</li>
+            <li>📊 Visit <a href="/metrics">Metrics</a> for model performance</li>
+        </ul>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const toggleBtn = document.getElementById("instructions-toggle");
+        const content = document.getElementById("instructions-content");
+
+        toggleBtn.addEventListener("click", () => {
+            toggleBtn.classList.toggle("active");
+            content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
+        });
+    });
+</script>
+
+     
+
+      {% with messages=get_flashed_messages()%} {% if messages %}
+      <div class="alert_style">
+        {% for message in messages %} {{message}}<br />
+        {% endfor %}
+      </div>
+      {% endif %} {% endwith %}
+
+      <script>
+        window.onload = function () {
+          const alrtbx = document.querySelector(".alert_style");
+          if (alrtbx) {
+            setTimeout(() => {
+              alrtbx.style.display = "none";
+            }, 6000);
+          }
+        };
+      </script>
+
+ 
+    </main>
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>About</h3>
+            <p>
+              <a href="">Predictive Maintenance System </a> Uses deep learning
+              to predict equipment failures from vibration data. It converts
+              signals into spectrograms, processes them with a CNN model ,and
+              delivers accurate predictions. With a Flask-powered web interface
+              , it helps industries reduce downtime , optimize maintenance ,and
+              improve efficiency through ear;y failure detection.
+            </p>
+          </div>
+          <div class="footer-subcon">
+            <div class="footer-section">
+              <h3>CNN Model Builder</h3>
+              <p>Shaik Farzana</p>
+            </div>
+
+            <div class="footer-section">
+              <h3>Flask Interface Builder</h3>
+              <p>Irfan Basha L</p>
+            </div>
+
+            <div class="footer-section">
+              <h3>Automation and Tester</h3>
+              <p>Anupriya T.V</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="copyright">
+          <p>&copy; Predective Maintenance System</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

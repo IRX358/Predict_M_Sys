@@ -1,0 +1,42 @@
+
+{% extends 'base.html' %}
+
+{% block bdycon %}
+
+<figure class="text-center">
+  <blockquote class="blockquote">
+    <p style="
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-decoration: underline blue;
+    text-decoration-style: double;
+    text-underline-offset: 8px;
+">Upload Vibration Flies.</p>
+  </blockquote>
+</figure>
+<figure class="text-center">
+  <form class="form" action="/Predict_M_Sys/static/uploads/" method="POST" enctype="multipart/form-data">
+    <label for="formFile" class="form-label"><label>
+      <input class="form-control" type="file" id="formFile" name="file" >
+      <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Upload</button>
+      </div> 
+    </form>
+<div id="lding"></div>
+    <script>
+      const form = document.querySelector('form');
+      const lding = document.getElementById('lding');
+
+      form.addEventListener('submit',()=>{
+        lding.style.display='block';
+      });
+      //I want the spinner , holding the page for 3s even if it gets loaded faster
+      // form.addEventListener('submit',function(event){
+      //   event.preventDefault(); //Preventing the form from submission and showing animation
+      //   lding.style.display='block';
+      //   setTimeout(()=>{form.submit();},3000);//delaying and submitting after 3secs
+      // });
+    </script>
+  </figure>
+
+{% endblock bdycon %}
