@@ -37,8 +37,9 @@ def upload_files():
     filepath = os.path.join(app.config['UPLOAD_FOLDER'],file.filename) #config the path in computer where file to be saved
     file.save(filepath)
 
-    res=subprocess.run(['python','sample_predictor.py',filepath],capture_output=True,text=True) #calling and executing the cnn model in order to get prdeiction results and capturing the output as text
-    prediction=res.stdout.strip()
+    #calling and executing the cnn model in order to get prdeiction results and capturing the output as text
+    res=subprocess.run(['python','predictor.py',filepath],capture_output=True,text=True) 
+    prediction=res.stdout
     #lets log the outputs we've got
     with open('predic_logs.csv',mode='a',newline='') as logfile:
         logger=csv.writer(logfile)
