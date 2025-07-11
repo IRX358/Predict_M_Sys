@@ -22,18 +22,35 @@
         <button type="submit" class="btn btn-primary">Upload</button>
       </div> 
     </form>
-<div id="lding"></div>
+     <div class="loader">
+        <ul>
+            <li><div></div></li>
+            <li><div></div></li>
+            <li><div></div></li>
+            <li><div></div></li>
+            <li><div></div></li>
+            <li><div></div></li>
+            <li><div></div></li>
+            <li><div></div></li>
+            <li><div></div></li>
+            <li><div></div></li>
+            <li><div></div></li>
+            <li><div></div></li>
+        </ul>
+        <h4> Generating Prediction ... </h4>
+    </div>
+<!-- <div id="lding"></div> -->
     <script>
       const form = document.querySelector('form');
-      const lding = document.getElementById('lding');
+      const loader = document.getElementsByClassName('loader');
 
       form.addEventListener('submit',()=>{
-        lding.style.display='block';
+        loader.style.display='block';
       });
-      //I want the spinner , holding the page for 3s even if it gets loaded faster
+       // I want the spinner , holding the page for 3s even if it gets loaded faster
       // form.addEventListener('submit',function(event){
       //   event.preventDefault(); //Preventing the form from submission and showing animation
-      //   lding.style.display='block';
+      //   loader.style.display='block';
       //   setTimeout(()=>{form.submit();},3000);//delaying and submitting after 3secs
       // });
     </script>

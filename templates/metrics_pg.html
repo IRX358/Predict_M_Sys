@@ -23,28 +23,31 @@
             <tbody>
                 <tr class="table-info" >
                     <th class="table-info"  scope="row">1</th>
-                    <td>Accuracy: </td>
+                    <td>Accuracy : </td>
                     <td>{{met_data.accuracy}}</td>
                 </tr>
                 <tr class="table-info" >
                     <th class="table-info"  scope="row">2</th>
-      <td>Precision: </td>
+      <td>Precision : </td>
       <td>{{met_data.precision}}</td>
     </tr>
     <tr class="table-info" >
         <th scope="row">3</th>
-        <td>Recall: </td>
+        <td>Recall : </td>
         <td>{{met_data.recall}}</td>
     </tr>
     <tr class="table-info" >
       <th class="table-info"  scope="row">4</th>
-      <td>Score: </td>
-      <td>{{met_data.score}}</td>
+      <td>F1 - Score : </td>
+      <td>{{met_data.f1_score}}</td>
     </tr>
   </tbody>
 </table>
-     <div class="col-auto">
-        <a href="/">
+ <blockquote class="blockquote">
+    <p class="head">Confusion Matrix : </p></blockquote>
+    <img class="confu_mat" src="{{confu_mat}}" alt="Confusion Matrix" width="400">
+<div class="col-auto">
+  <a href="/">
           <button class="btn btn-primary">Go Back to Uploads </button>
         </a>
       </div>

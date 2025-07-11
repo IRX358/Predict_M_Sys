@@ -38,23 +38,23 @@ to predict equipment failures from vibration data. It converts signals into spec
             <tbody>
                 <tr class="table-info" >
                     <th class="table-info"  scope="row">1</th>
-                    <td>Accuracy: </td>
-                    <td>{{met_data.accuracy}}</td>
+                    <td>Accuracy[Overall correct predictions] : </td>
+                    <td>0.9867</td>
                 </tr>
                 <tr class="table-info" >
                     <th class="table-info"  scope="row">2</th>
-      <td>Precision: </td>
-      <td>{{met_data.precision}}</td>
+      <td>Precision[True Positives / (TP + FP)]: </td>
+      <td>0.9867</td>
     </tr>
     <tr class="table-info" >
         <th scope="row">3</th>
-        <td>Recall: </td>
-        <td>{{met_data.recall}}</td>
+        <td>Recall[True Positives / (TP + FN)]: </td>
+        <td>0.9867</td>
     </tr>
     <tr class="table-info" >
       <th class="table-info"  scope="row">4</th>
-      <td>Score: </td>
-      <td>{{met_data.score}}</td>
+      <td>F1_Score[Harmonic mean of Precision & Recal]: </td>
+      <td>0.9867</td>
     </tr>
   </tbody>
 </table>  

@@ -1,5 +1,5 @@
 import os , subprocess ,json ,csv
-from flask import Flask,render_template,request,redirect,flash
+from flask import Flask,render_template,request,redirect,flash,url_for
 from datetime import datetime
 
 
@@ -53,9 +53,10 @@ def upload_files():
 
 @app.route('/metrics')
 def model_metrics():
-    with open('sample_metrics.json') as m:
+    with open('model_metrics.json') as m:
         met_data=json.load(m)
-    return render_template('metrics_pg.html',met_data=met_data)
+        img_path=url_for('static',filename='images/confusion_matrix.jpg')
+    return render_template('metrics_pg.html',met_data=met_data,confu_mat=img_path)
 
 @app.route('/logreports')
 def report():
