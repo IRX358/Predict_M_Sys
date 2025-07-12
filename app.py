@@ -48,7 +48,6 @@ def upload_files():
 
     # flash("Results fetched successfully")
     flash("Predictions Generated successfully ! ")
-    
     return render_template('results_pg.html',prediction=prediction,flnm=flnm) #leading to the results page with the prediciton rsults
 
 @app.route('/metrics')
@@ -57,6 +56,10 @@ def model_metrics():
         met_data=json.load(m)
         img_path=url_for('static',filename='images/confusion_matrix.jpg')
     return render_template('metrics_pg.html',met_data=met_data,confu_mat=img_path)
+
+@app.route('/instructions')
+def app_instructions():
+    return render_template('instructions_pg.html')
 
 @app.route('/logreports')
 def report():

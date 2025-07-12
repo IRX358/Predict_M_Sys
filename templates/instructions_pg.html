@@ -1,0 +1,29 @@
+ {% extends 'base.html' %} {% block bdycon %}
+  <main class="hero">
+
+      <section class="instruction-container">
+          <h2>User Instructions 📘</h2>
+    <button id="instructions-toggle">Show Instructions</button>
+    <div id="instructions-content">
+      <ul style="color: rgb(160, 182, 255);">
+        <li>📂 Upload a PNG or JPG file</li>
+        <li>⏳ Wait for the prediction result</li>
+        <li>✅ Check result or use Try Again if needed</li>
+        <li>📊 Visit <a href="/metrics">Metrics</a> for model performance</li>
+      </ul>
+    </div>
+  </section>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", () => {
+      const toggleBtn = document.getElementById("instructions-toggle");
+      const content = document.getElementById("instructions-content");
+
+      toggleBtn.addEventListener("click", () => {
+        toggleBtn.classList.toggle("active");
+        content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
+      });
+    });
+  </script>
+    </main>
+  {% endblock bdycon %}

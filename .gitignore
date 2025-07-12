@@ -1,4 +1,5 @@
 tfvirt/
 static/
 !static/images/confusion_matrix.jpg
+!static/images/logo.jpg
 templates/documented.txt

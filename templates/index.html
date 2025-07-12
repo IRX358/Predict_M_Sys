@@ -2,26 +2,74 @@
 {% extends 'base.html' %}
 
 {% block bdycon %}
+ <main class="hero">
+      <p class="hero-text">
+        A robust Deep Learning-powered Prediction Management System that identifies early signs of equipment failure using vibration data and CNN-based spectrogram analysis.
+      </p>
 
-<figure class="text-center">
-  <blockquote class="blockquote">
-    <p style="
-    margin-top: 30px;
-    margin-bottom: 30px;
-    text-decoration: underline blue;
-    text-decoration-style: double;
-    text-underline-offset: 8px;
-">Upload Vibration Flies.</p>
-  </blockquote>
-</figure>
-<figure class="text-center">
-  <form class="form" action="/Predict_M_Sys/static/uploads/" method="POST" enctype="multipart/form-data">
-    <label for="formFile" class="form-label"><label>
-      <input class="form-control" type="file" id="formFile" name="file" >
-      <div class="col-auto">
-        <button type="submit" class="btn btn-primary">Upload</button>
-      </div> 
-    </form>
+      <form action="/Predict_M_Sys/static/uploads/" method="POST" enctype="multipart/form-data" class="upload-box" id="drop-area">
+  <p>Drop your vibration data here or click to select</p>
+  <label for="formFile" class="form-label"></label>
+  <input type="file" name="file" id="fileFile" />
+
+  
+  <!-- New upload status container -->
+  <div id="upload-status" style="display:none; margin-top: 15px;">
+    <div id="file-info" style="color:#ccc; font-size:0.9rem; margin-bottom:6px;"></div>
+    <div id="progress-container" style="background:#2d2d2d; border-radius:10px; overflow:hidden; height: 12px;">
+      <div id="progress-bar" style="width: 0%; height: 100%; background: #586179; transition: width 0.3s ease;"></div>
+    </div>
+  </div>
+  
+  <button type="submit" id="upload-btn">Upload</button>
+</form> <script>
+const fileElem = document.getElementById('fileElem');
+const uploadStatus = document.getElementById('upload-status');
+const fileInfo = document.getElementById('file-info');
+const progressBar = document.getElementById('progress-bar');
+const uploadBtn = document.getElementById('upload-btn');
+
+fileElem.addEventListener('change', () => {
+  const file = fileElem.files[0];
+  if (!file) return;
+
+  uploadStatus.style.display = 'block';
+  fileInfo.textContent = `File: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+  progressBar.style.width = '0%';
+  uploadBtn.disabled = true;
+
+  // Simulate progress (for demo; replace with real XHR upload progress if backend supports)
+  let progress = 0;
+  const interval = setInterval(() => {
+    progress += 10;
+    progressBar.style.width = progress + '%';
+    if (progress >= 100) {
+      clearInterval(interval);
+      uploadBtn.disabled = false;
+    }
+  }, 150);
+});
+</script>
+   
+  </div>
+
+  <script>
+    const dropArea = document.getElementById('drop-area');
+    const fileInput = document.getElementById('fileElem');
+
+    dropArea.addEventListener('click', () => fileInput.click());
+    dropArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropArea.style.borderColor = '#777';
+    });
+    dropArea.addEventListener('dragleave', () => {
+      dropArea.style.borderColor = '#888';
+    });
+    dropArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      fileInput.files = e.dataTransfer.files;
+    });
+  </script>
      <div class="loader">
         <ul>
             <li><div></div></li>
@@ -54,6 +102,6 @@
       //   setTimeout(()=>{form.submit();},3000);//delaying and submitting after 3secs
       // });
     </script>
-  </figure>
+  </main>
 
 {% endblock bdycon %}

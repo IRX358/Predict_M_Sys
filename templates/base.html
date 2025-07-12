@@ -10,176 +10,444 @@
       integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
       crossorigin="anonymous"
     />
+
     <style>
-      body {
-        font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
-        background-color: rgb(171, 192, 255);
-      }
 
-      .head {
-        margin-top: 30px;
-        margin-bottom: 30px;
-        text-decoration: underline blue;
-        text-decoration-style: double;
-        text-underline-offset: 8px;
-      }
-      .h1 {
-        padding-top: 20px;
-      }
-      .col-auto {
-        padding-top: 20px;
-      }
-      .outbox {
-        margin-top: 16vh;
-        padding-bottom: 10vh;
-        width: 60vw;
-        height: auto;
-        border: 5px solid rgb(100, 96, 96);
-        margin-left: auto;
-        margin-right: auto;
-        border-radius: 10px;
-        color: aliceblue;
-        background-color: rgb(29, 29, 56);
-        align-items: center;
-      }
-      form{
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      }
-      footer {
-        background-color: #242424;
-        color: #ffff;
-        padding: 2rem ;
-        margin-top: 25vh;
-      }
 
-      .footer-subcon {
-        margin-top: 30px;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 2rem;
-      }
-
-      .footer-section h3 {
-        margin-bottom: 1rem;
-        font-size: 1.2rem;
-      }
-
-      .footer-section p,
-      .footer-section a {
-        color: #bbb;
-        margin-bottom: 0.5rem;
-        display: block;
-        text-decoration: none;
-      }
-
-      .footer-section a:hover {
-        color: white;
-      }
-
-      .copyright {
-        text-align: center;
-        padding-top: 2rem;
-        margin-top: 2rem;
-        border-top: 1px solid #444;
-        color: #bbb;
-      }
-      button{
+        button{
         cursor: pointer;
       }
-      .table {
-        border-collapse: separate;
-        border-spacing: 0;
-        border-radius: 15px;
-        overflow: hidden;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 40px;
-        border: 3px solid #3e3d3d;
-      } 
-      .alert_style {
-        padding: 15px;
-        margin-bottom: 20px;
-        border: 1px solid #d6d8db;
-        border-radius: 4px;
-        margin-top: 10vh;
-        /* Theme-color one */
-        background-color: #d1ecf1;
-        color: #0c5460;
+      
+  
+      body, html {
+        margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      height: 100%;
+      overflow-x: hidden;
+       background: linear-gradient(to bottom right, #443889, #2d2d2d);
+      height: auto;
+      position: relative;
+    }
+    
+    
+     /* background gear styles */
+@keyframes rotateGears {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+    .gear-bg span{
+      position: absolute;
+      /* top: 42vh;
+      left: 9vw;
+      right: 0;
+      bottom: 0; */
+      background-image: url("{{ url_for('static', filename='images/gear.svg') }}");
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 30vw;
+      height: 60vh;
+      opacity: 0.20;
+      z-index: 0;
 
-        /* Green-color one
-         background-color: #d4edda;
-        color: #155724;
-        border-color: #c3e6cb; */
+      animation: rotateGears 30s linear infinite;
+  transform-origin: center center;
+    }
 
-        /* Red-color one
-         background-color: #f8d7da;
-        color: #721c24;
-        border-color: #f5c6cb; */
 
-        font-family: sans-serif;
-      }
-      /* #lding{
-       
-        display: none;
-        position:absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-        border: 6px solid #f3f3f3;
-        border-top: 6px solid#007bff;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        animation: spin 1s linear infinite ;
-        z-index: 9999;
-      }
-      @keyframes spin {
-        0%{ transform: translate(-50%,-50%) rotate(0deg);}
-        100%{ transform: translate(-50%,-50%) rotate(360deg);}
-        
-      } */
-      /* loader styling start */
-        
-.loader{
-  display: none;
-        position:absolute;
-        width:320px;
-        height:240px;
-        left:50%;
-        top:50%;
-        margin-left:-160px;
-        margin-top:-120px;
-        border-radius:4px;
-        transition:opacity 400ms;
+.gear-bg span:nth-child(1) {
+  top: 9vh;
+  right: 0;
+  filter: invert(60%);
+}
+.gear-bg span:nth-child(2) {
+  position: fixed;
+  top: 69vh;
+  left: 0;
+  filter: invert(60%);
 }
 
-@keyframes pulse{
+
+
+    .header {
+  position: relative;
+  overflow: visible;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  align-items: center;
+  padding: 20px 40px;
+  gap: 20px;
+}
+
+
+    .logo-container {
+      width: 138px;
+      height: 75px;
+      border-radius: 5%;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+      transform: perspective(500px) rotateX(5deg);
+      
+    }
+
+    .logo {
+      /* width: 138px;
+      height: 75px; */
+      width: 100%;
+      height: 100%;
+      object-fit:cover;
+    }
+    .nav{
+      width: 100%;
+    }
+.nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  padding: 0;
+  margin: 0 auto;
+}
+
+
+    .nav li a {
+      text-decoration: none;
+      color: #cbd2ff;
+      background: #443889;
+      padding: 10px 25px;
+      border-radius: 25px;
+      border: 2px solid black;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+      transition: all 0.3s ease-in-out;
+    }
+
+    .nav li a:hover {
+      background-color: #5e3dad;
+      color: #ffffff;
+    }
+
+    .hero {
+      position: relative;
+      z-index: 2;
+      margin-top: 8vh;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    .hero-text {
+      color: #e0e0ff;
+      font-size: 1.4rem;
+      max-width: 700px;
+      margin: 0 auto 40px;
+      line-height: 1.5;
+    }
+    .instruction-container {
+      max-width: 700px;
+      margin: 10vh auto;
+      background-color: rgba(30, 30, 50, 0.95);
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      transition: 0.3s ease;
+    }
+
+    .instruction-container h2 {
+      color: #a78bfa;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #instructions-toggle {
+      background: #5e3dad;
+      border: none;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #instructions-toggle:hover {
+      background: #443889;
+    }
+
+    #instructions-content {
+     
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      max-height: 0;
+    }
+
+    #instructions-content ul {
+      list-style: none;
+      padding: 0;
+      font-size: 1.1rem;
+      line-height: 2;
+      color: #fff;
+    }
+
+    #instructions-content a {
+      color: #a78bfa;
+      text-decoration: underline;
+    }
+
+    .upload-box {
+      margin: 0 auto;
+      width: 80%;
+      max-width: 500px;
+      padding: 40px;
+      border: 2px dashed #888;
+      border-radius: 20px;
+      background-color: rgba(40, 40, 60, 0.9);
+      color: #ccc;
+      position: relative;
+    }
+    
+    .upload-box p {
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+    
+    .upload-box input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+
+    .upload-box button {
+      background-color: #3c4466;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      box-shadow: 2px 2px 5px #000;
+    }
+
+    .upload-box button:hover {
+      background-color: #586179;
+    }
+    #upload-status {
+      margin-top: 15px;
+    }
+    
+    #progress-container {
+      background: #2d2d2d;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 12px;
+}
+
+#progress-bar {
+  width: 0%;
+  height: 100%;
+  background: #586179;
+  transition: width 0.3s ease;
+}
+
+.results-section {
+      text-align: center;
+      margin: 10vh auto;
+      padding: 40px;
+      max-width: 700px;
+      background: rgba(20, 20, 40, 0.9);
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+    
+    .results-section h1 {
+      font-size: 2.5rem;
+      color: #a78bfa;
+    }
+
+    .results-section p {
+      font-size: 1.2rem;
+      margin: 20px 0;
+    }
+
+    .results-section a button {
+      background-color: #5e3dad;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      margin: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .results-section a button:hover {
+      background-color: #443889;
+    }
+    .metrics-section {
+      max-width: 850px;
+      margin: 10vh auto;
+      background-color: rgba(30, 30, 50, 0.95);
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    .metrics-section h1 {
+      color: #a78bfa;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: center;
+      border: 1px solid #888;
+      color: #fff;
+    }
+    
+    th {
+      background-color: #5e3dad;
+    }
+
+    tr:nth-child(even) {
+      background-color: rgba(255,255,255,0.05);
+    }
+    
+    .confu_mat {
+      display: block;
+      margin: 0 auto 30px;
+      border: 2px solid #777;
+      border-radius: 10px;
+    }
+    
+    .metrics-section a button {
+      background-color: #5e3dad;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .metrics-section a button:hover {
+      background-color: #443889;
+    }
+
+    .logs-section {
+      max-width: 950px;
+      margin: 10vh auto;
+      background-color: rgba(30, 30, 50, 0.95);
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    .logs-section h1 {
+      text-align: center;
+      color: #a78bfa;
+      margin-bottom: 30px;
+    }
+
+    .logs-section a button {
+      background-color: #5e3dad;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .logs-section a button:hover {
+      background-color: #443889;
+    }
+    .alert_style {
+      padding: 15px;
+      margin-bottom: 20px;
+      border: 1px solid #d6d8db;
+      border-radius: 4px;
+      margin-top: 10vh;
+      /* Theme-color one */
+      background-color: #d1ecf1;
+      color: #0c5460;
+    
+      /* Green-color one
+       background-color: #d4edda;
+      color: #155724;
+      border-color: #c3e6cb; */
+    
+      /* Red-color one
+       background-color: #f8d7da;
+      color: #721c24;
+      border-color: #f5c6cb; */
+    
+      font-family: sans-serif;
+    }
+
+    a{
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    /* loader styling start */
+      
+    .loader{
+    display: none;
+      position:absolute;
+      width:320px;
+      height:240px;
+      left:50%;
+      top:50%;
+      margin-left:-160px;
+      margin-top:-120px;
+      border-radius:4px;
+      transition:opacity 400ms;
+    }
+    
+    @keyframes pulse{
     0%{
-      height:0%;
-      box-shadow:0 0 4px rgba(0,0,0,1.0);
+    height:0%;
+    box-shadow:0 0 4px rgba(0,0,0,1.0);
     }
     20%{
-      background:rgba(255,255,255,0.5);
-      height:100%;
-      box-shadow:0 0 8px rgba(255,255,255,0.0);
+    background:rgba(255,255,255,0.5);
+    height:100%;
+    box-shadow:0 0 8px rgba(255,255,255,0.0);
     }
     50%{
-      background:rgba(17,217,255,1);
-      box-shadow:0 0 8px rgba(17,217,255,0.8);
+    background:rgba(17,217,255,1);
+    box-shadow:0 0 8px rgba(17,217,255,0.8);
     }
     80%{
-      background:rgba(255,255,255,0.5);
-      height:100%;
-      box-shadow:0 0 8px rgba(255,255,255,0.0);
+    background:rgba(255,255,255,0.5);
+    height:100%;
+    box-shadow:0 0 8px rgba(255,255,255,0.0);
     }
     100%{
-      height:0%;
-      box-shadow:0 0 4px rgba(0,0,0,1.0);
+    height:0%;
+    box-shadow:0 0 4px rgba(0,0,0,1.0);
     }
-}
-
-.loader > ul{
+    }
+    
+    .loader > ul{
     list-style:none;
     position:absolute;
     width:120px;
@@ -187,22 +455,22 @@
     left:50%;
     top:50%;
     margin:-60px -80px;
-}
-
-.loader li{
- width:4px;
- height:30px;
- border-radius:2px;
- background:#050505;    
- position:absolute;
- left:50%;
- top:10px;
- margin-left:-2px;
- transform-origin:2px 50px;
+    }
+    
+    .loader li{
+    width:4px;
+    height:30px;
+    border-radius:2px;
+    background:#050505;    
+    position:absolute;
+    left:50%;
+    top:10px;
+    margin-left:-2px;
+    transform-origin:2px 50px;
     box-shadow:1px 0 0 rgba(255,255,255,0.1);
-}
-
-.loader li div{
+    }
+    
+    .loader li div{
     border-radius:2px;
     width:4px;
     background:rgba(255,255,255,0.5);
@@ -210,129 +478,129 @@
     bottom:0px;
     left:0px;
     animation:pulse 6s normal infinite;
-}
-
- .loader ul>li:nth-of-type(1){
- transform:rotate(0deg);   
- box-shadow:0 1px 0 rgba(255,255,255,0.1);
-}
-
- .loader ul>li:nth-of-type(1)>div{
- animation-delay:100ms;   
-}
-
- .loader ul>li:nth-of-type(2){
- transform:rotate(30deg);   
-}
-
- .loader ul>li:nth-of-type(2)>div{
- animation-delay:200ms;   
-}
-
-
- .loader ul>li:nth-of-type(3){
- transform:rotate(60deg);   
-}
-
- .loader ul>li:nth-of-type(3)>div{
- animation-delay:300ms;   
-}
-
-
- .loader ul>li:nth-of-type(4){
- transform:rotate(90deg);   
-}
-
- .loader ul>li:nth-of-type(4)>div{
- animation-delay:400ms;   
-}
-
-
- .loader ul>li:nth-of-type(5){
- transform:rotate(120deg);   
-}
-
- .loader ul>li:nth-of-type(5)>div{
- animation-delay:500ms;   
-}
-
-
- .loader ul>li:nth-of-type(6){
- transform:rotate(150deg);   
-}
-
- .loader ul>li:nth-of-type(6)>div{
- animation-delay:600ms;   
-}
-
-
- .loader ul>li:nth-of-type(7){
- transform:rotate(180deg);   
- box-shadow:0 -1px 0 rgba(255,255,255,0.1);
-}
-
- .loader ul>li:nth-of-type(7)>div{
- animation-delay:700ms;   
-}
-
-
- .loader ul>li:nth-of-type(8){
- transform:rotate(210deg);   
- box-shadow:-1px 0 0 rgba(255,255,255,0.1);
-}
-
- .loader ul>li:nth-of-type(8)>div{
-  animation-delay:800ms;   
-}
-
-
- .loader ul>li:nth-of-type(9){
- transform:rotate(240deg);   
- box-shadow:-1px 0 0 rgba(255,255,255,0.1);
-}
-u .loader l>li:nth-of-type(9)>div{
- animation-delay:900ms;   
-}
-
-
- .loader ul>li:nth-of-type(10){
- transform:rotate(270deg);   
- box-shadow:-1px 0 0 rgba(255,255,255,0.1);
-}
- .loader ul>li:nth-of-type(10)>div{
- animation-delay:1000ms;   
-}
-
-
-
- .loader ul>li:nth-of-type(11){
- transform:rotate(300deg);   
- box-shadow:-1px 0 0 rgba(255,255,255,0.1);
-}
-
- .loader ul>li:nth-of-type(11)>div{
- animation-delay:1100ms;   
-}
-
-
- .loader ul>li:nth-of-type(12){
- transform:rotate(330deg);   
- box-shadow:-1px 0 0 rgba(255,255,255,0.1);
-}
-
- .loader ul>li:nth-of-type(12)>div{
- animation-delay:1200ms;   
-}
-.loader{
-background: rgb(48, 47, 47);
-background: -moz-linear-gradient(45deg,  rgba(5,5,5,1) 0%, rgba(16,16,16,1) 100%);
-background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,rgba(5,5,5,1)), color-stop(100%,rgba(16,16,16,1)));
-background: -webkit-linear-gradient(45deg,  rgba(5,5,5,1) 0%,rgba(16,16,16,1) 100%);
-background: -o-linear-gradient(45deg,  rgba(5,5,5,1) 0%,rgba(16,16,16,1) 100%);
-background: -ms-linear-gradient(45deg,  rgba(5,5,5,1) 0%,rgba(16,16,16,1) 100%);
-background: linear-gradient(45deg,  rgba(5,5,5,1) 0%,rgba(16,16,16,1) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#050505', endColorstr='#101010',GradientType=1 );
-
+    }
+    
+    .loader ul>li:nth-of-type(1){
+    transform:rotate(0deg);   
+    box-shadow:0 1px 0 rgba(255,255,255,0.1);
+    }
+    
+    .loader ul>li:nth-of-type(1)>div{
+    animation-delay:100ms;   
+    }
+    
+    .loader ul>li:nth-of-type(2){
+    transform:rotate(30deg);   
+    }
+    
+    .loader ul>li:nth-of-type(2)>div{
+    animation-delay:200ms;   
+    }
+    
+    
+    .loader ul>li:nth-of-type(3){
+    transform:rotate(60deg);   
+    }
+    
+    .loader ul>li:nth-of-type(3)>div{
+    animation-delay:300ms;   
+    }
+    
+    
+    .loader ul>li:nth-of-type(4){
+    transform:rotate(90deg);   
+    }
+    
+    .loader ul>li:nth-of-type(4)>div{
+    animation-delay:400ms;   
+    }
+    
+    
+    .loader ul>li:nth-of-type(5){
+    transform:rotate(120deg);   
+    }
+    
+    .loader ul>li:nth-of-type(5)>div{
+    animation-delay:500ms;   
+    }
+    
+    
+    .loader ul>li:nth-of-type(6){
+    transform:rotate(150deg);   
+    }
+    
+    .loader ul>li:nth-of-type(6)>div{
+    animation-delay:600ms;   
+    }
+    
+    
+    .loader ul>li:nth-of-type(7){
+    transform:rotate(180deg);   
+    box-shadow:0 -1px 0 rgba(255,255,255,0.1);
+    }
+    
+    .loader ul>li:nth-of-type(7)>div{
+    animation-delay:700ms;   
+    }
+    
+    
+    .loader ul>li:nth-of-type(8){
+    transform:rotate(210deg);   
+    box-shadow:-1px 0 0 rgba(255,255,255,0.1);
+    }
+    
+    .loader ul>li:nth-of-type(8)>div{
+    animation-delay:800ms;   
+    }
+    
+    
+    .loader ul>li:nth-of-type(9){
+    transform:rotate(240deg);   
+    box-shadow:-1px 0 0 rgba(255,255,255,0.1);
+    }
+    u .loader l>li:nth-of-type(9)>div{
+    animation-delay:900ms;   
+    }
+    
+    
+    .loader ul>li:nth-of-type(10){
+    transform:rotate(270deg);   
+    box-shadow:-1px 0 0 rgba(255,255,255,0.1);
+    }
+    .loader ul>li:nth-of-type(10)>div{
+    animation-delay:1000ms;   
+    }
+    
+    
+    
+    .loader ul>li:nth-of-type(11){
+    transform:rotate(300deg);   
+    box-shadow:-1px 0 0 rgba(255,255,255,0.1);
+    }
+    
+    .loader ul>li:nth-of-type(11)>div{
+    animation-delay:1100ms;   
+    }
+    
+    
+    .loader ul>li:nth-of-type(12){
+    transform:rotate(330deg);   
+    box-shadow:-1px 0 0 rgba(255,255,255,0.1);
+    }
+    
+    .loader ul>li:nth-of-type(12)>div{
+    animation-delay:1200ms;   
+    }
+    .loader{
+    background: rgb(48, 47, 47);
+    background: -moz-linear-gradient(45deg,  rgba(5,5,5,1) 0%, rgba(16,16,16,1) 100%);
+    background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,rgba(5,5,5,1)), color-stop(100%,rgba(16,16,16,1)));
+    background: -webkit-linear-gradient(45deg,  rgba(5,5,5,1) 0%,rgba(16,16,16,1) 100%);
+    background: -o-linear-gradient(45deg,  rgba(5,5,5,1) 0%,rgba(16,16,16,1) 100%);
+    background: -ms-linear-gradient(45deg,  rgba(5,5,5,1) 0%,rgba(16,16,16,1) 100%);
+    background: linear-gradient(45deg,  rgba(5,5,5,1) 0%,rgba(16,16,16,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#050505', endColorstr='#101010',GradientType=1 );
+    
     position:absolute;
     width:320px;
     height:240px;
@@ -343,15 +611,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#050505', end
     border-radius:4px;
     
     box-shadow:0 0 4px 0px rgba(0,0,0,0.6),inset 0px 1px 0px #000,inset 0px -1px 0px #000,inset 1px 0px 0px #000,inset -1px 0px 0px #000;
-}
-
-.loader::after{
-background: -moz-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.03) 49%, rgba(255,255,255,0.02) 50%, rgba(255,255,255,0.02) 100%);
-background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(255,255,255,0.03)), color-stop(49%,rgba(255,255,255,0.03)), color-stop(50%,rgba(255,255,255,0.02)), color-stop(100%,rgba(255,255,255,0.02)));
-background: -webkit-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.03) 0%,rgba(255,255,255,0.03) 49%,rgba(255,255,255,0.02) 50%,rgba(255,255,255,0.02) 100%);
-background: -o-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.03) 0%,rgba(255,255,255,0.03) 49%,rgba(255,255,255,0.02) 50%,rgba(255,255,255,0.02) 100%);
-background: -ms-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.03) 0%,rgba(255,255,255,0.03) 49%,rgba(255,255,255,0.02) 50%,rgba(255,255,255,0.02) 100%);
-background: radial-gradient(ellipse at center,  rgba(255,255,255,0.03) 0%,rgba(255,255,255,0.03) 49%,rgba(255,255,255,0.02) 50%,rgba(255,255,255,0.02) 100%);
+    }
+    
+    .loader::after{
+    background: -moz-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.03) 49%, rgba(255,255,255,0.02) 50%, rgba(255,255,255,0.02) 100%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(255,255,255,0.03)), color-stop(49%,rgba(255,255,255,0.03)), color-stop(50%,rgba(255,255,255,0.02)), color-stop(100%,rgba(255,255,255,0.02)));
+    background: -webkit-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.03) 0%,rgba(255,255,255,0.03) 49%,rgba(255,255,255,0.02) 50%,rgba(255,255,255,0.02) 100%);
+    background: -o-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.03) 0%,rgba(255,255,255,0.03) 49%,rgba(255,255,255,0.02) 50%,rgba(255,255,255,0.02) 100%);
+    background: -ms-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.03) 0%,rgba(255,255,255,0.03) 49%,rgba(255,255,255,0.02) 50%,rgba(255,255,255,0.02) 100%);
+    background: radial-gradient(ellipse at center,  rgba(255,255,255,0.03) 0%,rgba(255,255,255,0.03) 49%,rgba(255,255,255,0.02) 50%,rgba(255,255,255,0.02) 100%);
     position:absolute;
     width:100%;
     height:100%;
@@ -360,122 +628,40 @@ background: radial-gradient(ellipse at center,  rgba(255,255,255,0.03) 0%,rgba(2
     left:0px;
     z-index:4;
     content:' ';
-}
-
-.loader h4{
-   text-align:center;
-   width:100%;
-   position:absolute;
-   bottom:0px;
-   font-family:'Source Sans',sans-serif;
-   font-weight:300;
-}
-
-
-
-      /* loader styling end */
-    #instructions-container {
-        position: absolute;
-        top: 120px;
-        right: 20px;
-        width: 150px;
-        z-index: 999;
-        font-family: 'Segoe UI', sans-serif;
     }
-
-    #instructions-toggle {
-        width: 100%;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 10px 12px;
-        border-radius: 4px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
+    
+    .loader h4{
+    text-align:center;
+    width:100%;
+    position:absolute;
+    bottom:0px;
+    font-family:'Source Sans',sans-serif;
+    font-weight:300;
     }
-
-    #arrow-icon {
-        transition: transform 0.3s ease;
-    }
-
-    #instructions-toggle.active #arrow-icon {
-        transform: rotate(180deg);
-    }
-
-    #instructions-content {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.4s ease;
-        background-color: #f1f1f1;
-        border-radius: 4px;
-        margin-top: 5px;
-        padding: 0 12px;
-    }
-
-    #instructions-content ul {
-        margin: 10px 0;
-        padding-left: 20px;
-        list-style:square;
-        font-size: 13px;
-        color: #333;
-    }
-
-    #instructions-content li {
-        margin-bottom: 8px;
-        font-size: 16px;
-    }
-   .confu_mat{
-    margin-top: 15px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    border: 4px solid rgb(72, 72, 72);
-   }
+    /* loader styling end */
     </style>
   </head>
   <body>
-    <figure class="text-center">
-      <blockquote class="blockquote">
-        <p class="text-muted h1">
-          Welcome to the Predictive Maintenance System
-        </p>
-      </blockquote>
-      <hr class="border border-primary border-3 opacity-75" />
-    </figure>
-    <main style="height: auto">
-      <div class="outbox">{% block bdycon %} {% endblock bdycon %}</div>
-      
-      <!-- The instructions tab -->
-      <div id="instructions-container">
-    <button id="instructions-toggle">
-        <span>Instructions</span>
-        <svg id="arrow-icon" width="20" height="20" viewBox="0 0 24 24">
-            <path d="M6 9l6 6 6-6" fill="none" stroke="white" stroke-width="2" />
-        </svg>
-    </button>
-    <div id="instructions-content">
-        <ul>
-            <li>📂 Upload a PNG or JPG file</li>
-            <li>⏳ Wait for the prediction result</li>
-            <li>✅ Check result or use Try Again if needed</li>
-            <li>📊 Visit <a href="/metrics">Metrics</a> for model performance</li>
-        </ul>
-    </div>
+   <div>
+    <div class="gear-bg">
+  <span></span>
+  <span></span>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const toggleBtn = document.getElementById("instructions-toggle");
-        const content = document.getElementById("instructions-content");
 
-        toggleBtn.addEventListener("click", () => {
-            toggleBtn.classList.toggle("active");
-            content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
-        });
-    });
-</script>
+    <header class="header">
+      <a href="/"> <div class="logo-container">
+        <img class="logo" src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo" />
+      </div></a>
+      <nav class="nav">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/instructions">Instructions</a></li>
+          <li><a href="/metrics">Model Metrics</a></li>
+        </ul>
+      </nav>
+    </header>
+ {% block bdycon %} {% endblock bdycon %}
 
-     
 
       {% with messages=get_flashed_messages()%} {% if messages %}
       <div class="alert_style">
@@ -497,40 +683,46 @@ background: radial-gradient(ellipse at center,  rgba(255,255,255,0.03) 0%,rgba(2
 
  
     </main>
-    <footer>
-      <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3>About</h3>
+    <footer style=" background:#1c1c2e; color:#d2d0ff; padding:40px 20px; font-size:14px; padding: 2rem ; margin-top: 25vh; ">
+      <div style="max-width:1100px; margin:0 auto;">
+        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:40px;">
+          <div style="flex:1; min-width:250px;">
+            <h3 style="color:#a78bfa; margin-bottom:10px;">About</h3>
             <p>
-              <a href="">Predictive Maintenance System </a> Uses deep learning
-              to predict equipment failures from vibration data. It converts
-              signals into spectrograms, processes them with a CNN model ,and
-              delivers accurate predictions. With a Flask-powered web interface
-              , it helps industries reduce downtime , optimize maintenance ,and
-              improve efficiency through early failure detection.
+              <a href="#" style="color:#cfcaff; text-decoration:none;">Predictive Maintenance System</a>
+              uses deep learning to predict equipment failures from vibration data. It converts signals into spectrograms,
+              processes them with a CNN model, and delivers accurate predictions. Flask-powered UI ensures smooth, insightful access.
             </p>
           </div>
-          <div class="footer-subcon">
-            <div class="footer-section">
-              <h3>CNN Model Builder</h3>
-              <p>Shaik Farzana</p>
-            </div>
+          <div style="flex:1; min-width:250px;">
+            <h3 style="color:#a78bfa; margin-bottom:10px;">CNN Model Builder</h3>
+            <p>
+              Shaik Farzana
+              <a href="https://linkedin.com/in/sample-shaikfarzana" target="_blank" style="margin-left:10px; color:#a78bfa;">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" alt="LinkedIn" style="width:16px; vertical-align:middle;" />
+              </a>
+            </p>
 
-            <div class="footer-section">
-              <h3>Flask Interface Builder</h3>
-              <p>Irfan Basha L</p>
-            </div>
+            <h3 style="color:#a78bfa; margin:20px 0 10px;">Flask Interface Builder</h3>
+            <p>
+              Irfan Basha L
+              <a href="https://linkedin.com/in/sample-irfanbasha" target="_blank" style="margin-left:10px; color:#a78bfa;">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" alt="LinkedIn" style="width:16px; vertical-align:middle;" />
+              </a>
+            </p>
 
-            <div class="footer-section">
-              <h3>Automation and Tester</h3>
-              <p>Anupriya T.V</p>
-            </div>
+            <h3 style="color:#a78bfa; margin:20px 0 10px;">Automation and Tester</h3>
+            <p>
+              Anupriya T.V
+              <a href="https://linkedin.com/in/sample-anupriya" target="_blank" style="margin-left:10px; color:#a78bfa;">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" alt="LinkedIn" style="width:16px; vertical-align:middle;" />
+              </a>
+            </p>
           </div>
         </div>
-
-        <div class="copyright">
-          <p>&copy; Predective Maintenance System</p>
+        <hr style="margin:30px 0; border-color:#5e3dad;" />
+        <div style="text-align:center; color:#aaa;">
+          <p>&copy; 2025 Predictive Maintenance System || Built with great MOOD😎 , EXCITEMENT🤩 and CURIOSITY🤔</p>
         </div>
       </div>
     </footer>

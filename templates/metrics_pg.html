@@ -1,57 +1,48 @@
 {% extends 'base.html' %}
 {% block bdycon %}
-<figure class="text-center">
-  <blockquote class="blockquote">
-    <p class="head">Model Metrics : </p></blockquote>
+ <main class="hero">
+   
+  <section class="metrics-section">
+    <h1>Model Metrics</h1>
 
-    <!-- <ul>
-        <li>Accuracy: {{met_data.accuracy}}</li>
-        <li>Precision: {{met_data.precision}}</li>
-        <li>Recall: {{met_data.recall}}</li>
-        <li>Score: {{met_data.score}}</li>
-    </ul> -->
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Metric</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Accuracy</td>
+          <td>{{met_data.accuracy}}</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Precision</td>
+          <td>{{met_data.precision}}</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Recall</td>
+          <td>{{met_data.recall}}</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>F1-Score</td>
+          <td>{{met_data.f1_score}}</td>
+        </tr>
+      </tbody>
+    </table>
 
-
-        <table class="table table-info table-striped-columns"  style="width: 40vw; height: auto;">
-            <thead>
-                <tr class="table-info" >
-                    <th class="table-info"  scope="col"># </th>
-                    <th class="table-info"  scope="col">Metrics </th>
-                    <th class="table-info"  scope="col">Values </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="table-info" >
-                    <th class="table-info"  scope="row">1</th>
-                    <td>Accuracy : </td>
-                    <td>{{met_data.accuracy}}</td>
-                </tr>
-                <tr class="table-info" >
-                    <th class="table-info"  scope="row">2</th>
-      <td>Precision : </td>
-      <td>{{met_data.precision}}</td>
-    </tr>
-    <tr class="table-info" >
-        <th scope="row">3</th>
-        <td>Recall : </td>
-        <td>{{met_data.recall}}</td>
-    </tr>
-    <tr class="table-info" >
-      <th class="table-info"  scope="row">4</th>
-      <td>F1 - Score : </td>
-      <td>{{met_data.f1_score}}</td>
-    </tr>
-  </tbody>
-</table>
- <blockquote class="blockquote">
-    <p class="head">Confusion Matrix : </p></blockquote>
+    <h1 style="margin-bottom: 15px;">Confusion Matrix</h1>
     <img class="confu_mat" src="{{confu_mat}}" alt="Confusion Matrix" width="400">
-<div class="col-auto">
-  <a href="/">
-          <button class="btn btn-primary">Go Back to Uploads </button>
-        </a>
-      </div>
-  </blockquote>
-</figure>
 
+    <a href="/">
+      <button>Go Back to Uploads</button>
+    </a>
+  </section>
+</main>
 {% endblock bdycon %}
