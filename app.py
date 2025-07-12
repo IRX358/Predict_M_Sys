@@ -58,7 +58,7 @@ def upload_files():
         flash("No folder selected!")
         return redirect('/')
 
-    # Generate a unique folder name (optional: use timestamp or user)
+    # Generate a unique folder name (optional: use timestamp or user) 
     folder_name = "latest_upload"+datetime.now().strftime("%D %H:%M")
     upload_dir = os.path.join(app.config['UPLOAD_FOLDER'], folder_name)
 
@@ -68,7 +68,7 @@ def upload_files():
         shutil.rmtree(upload_dir)
     os.makedirs(upload_dir, exist_ok=True)
 
-    # Save all files in same relative structure
+    # Save all files in same relative structure 
     for file in file:
         if not upldvld(file.filename):
             continue

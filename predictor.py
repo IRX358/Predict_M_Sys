@@ -7,12 +7,21 @@ from tensorflow.keras.models import load_model
 from PIL import Image
 import argparse
 import io
+# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
-# === Configuration ===
+# === Configuration === generator and sample files\4. Bearings\IMS\1st_test
 fs = 2500
 img_size = (128, 128)
+
+from keras.utils import register_keras_serializable
+
+@register_keras_serializable()
+def gray_to_rgb(x):
+    import tensorflow as tf
+    return tf.image.grayscale_to_rgb(x)
+
 model_path = "mobilenet_vibration_classifier.h5"
-model = load_model(model_path)
+model = load_model(model_path,compile=False)
 
 def generate_spectrogram_image(signal):
     S = librosa.stft(signal, n_fft=256, hop_length=128)
