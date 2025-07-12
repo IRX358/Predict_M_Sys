@@ -1,25 +1,13 @@
 {% extends 'base.html' %} {% block bdycon %}
 
-<figure class="text-center">
-  <blockquote class="blockquote">
+  <section class="results-section">
     <h1>Prediction Results</h1>
-    <p>Predicted result for {{flnm}} :{{prediction}}</p>
-    <div class="col-auto">
-      <a href="/">
-        <button class="btn btn-primary">Upload Another File</button>
-      </a>
+    <p style="color: rgb(167, 214, 255);">Predicted result for <strong>{{ flnm }}</strong>: <span>{{ prediction }}</span></p>
+    <div>
+      <a href="/"><button>Upload Another File</button></a>
+      <a href="/logreports" target="_blank"><button>Log Reports</button></a>
+      <a href="/metrics"><button>Check Model Metrics</button></a>
     </div>
-    <div class="col-auto">
-      <a href="/logreports" target="_blank">
-        <button class="btn btn-primary">Log Reports</button>
-      </a>
-    </div>
-    <div class="col-auto">
-      <a href="/metrics">
-        <button class="btn btn-primary">Check Model Metrics</button>
-      </a>
-    </div>
-  </blockquote>
-</figure>
+  </section>
 
 {% endblock bdycon %}
