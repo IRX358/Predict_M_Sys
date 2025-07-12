@@ -75,7 +75,8 @@ to predict equipment failures from vibration data. It converts signals into spec
 
 - 🐍 *Python 3.10+*  
 - ⚙ *Flask*    
-- 🐘 *PostgreSQL* (or SQLite if local)  
+- ⛩️ *Jinja*
+- 🌐 *HTML - CSS - JS*
 
 
 ---
