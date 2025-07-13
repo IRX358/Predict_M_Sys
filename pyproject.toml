@@ -1,8 +1,0 @@
-[tool.poetry]
-name = "Predictive_Manaagement_System"
-version = "0.1.0"
-description = "Flask + TensorFlow deployment"
-authors = ["IR"]
-
-[tool.poetry.dependencies]
-python = "3.10.11"
