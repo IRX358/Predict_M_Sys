@@ -1,5 +1,5 @@
 # === Base Image ===
-FROM python:3.10.12-slim
+FROM python:3.11.9-slim
 
 # === System dependencies (for scientific libs, TensorFlow, etc.) ===
 RUN apt-get update && apt-get install -y \
