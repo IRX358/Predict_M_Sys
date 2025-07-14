@@ -20,77 +20,77 @@ def start():
     return render_template('index.html')
 # HANDLES SINGLE FILE
 
-# @app.route('/Predict_M_Sys/static/uploads/',methods=['POST'])
-# def upload_files():
-   
-    
-#     file=request.files['file']  #if the file uploaded is of no nAme then return error and redirect
-#     if file.filename=='':
-#         flash("No files are selected")
-#         return redirect('/')
-    
-#     if not upldvld(file.filename):
-#         flash("Invalid file type. Please upload a PNG or JPG file")
-#         return redirect('/') 
-
-#     filepath = os.path.join(app.config['UPLOAD_FOLDER'],file.filename) #config the path in computer where file to be saved
-#     file.save(filepath)
-
-#     #calling and executing the cnn model in order to get prdeiction results and capturing the output as text
-#     res=subprocess.run(['python','predictor.py',filepath],capture_output=True,text=True) 
-#     prediction=res.stdout
-#     #lets log the outputs we've got
-#     with open('predic_logs.csv',mode='a',newline='') as logfile:
-#         logger=csv.writer(logfile)
-#         flnm=file.filename
-#         logger.writerow([file.filename,prediction,datetime.now().strftime("%D %H:%M")])
-
-#     # flash("Results fetched successfully")
-#     flash("Predictions Generated successfully ! ")
-#     return render_template('results_pg.html',prediction=prediction,flnm=flnm) #leading to the results page with the prediciton rsults
-
-# HANDLES THE FOLDER
-
 @app.route('/Predict_M_Sys/static/uploads/',methods=['POST'])
 def upload_files():
-    file = request.files.getlist('files')
-    if not file or file[0].filename == '': #if the file uploaded is of no nAme then return error and redirect
-        flash("No folder selected!")
+   
+    
+    file=request.files['file']  #if the file uploaded is of no nAme then return error and redirect
+    if file.filename=='':
+        flash("No files are selected")
         return redirect('/')
+    
+    if not upldvld(file.filename):
+        flash("Invalid file type. Please upload a PNG or JPG file")
+        return redirect('/') 
 
-    # Generate a unique folder name (optional: use timestamp or user) 
-    folder_name = "latest_upload"+datetime.now().strftime("%D %H:%M")
-    upload_dir = os.path.join(app.config['UPLOAD_FOLDER'], folder_name)
-
-    # Clear if already exists
-    if os.path.exists(upload_dir):
-        import shutil
-        shutil.rmtree(upload_dir)
-    os.makedirs(upload_dir, exist_ok=True)
-
-    # Save all files in same relative structure 
-    for file in file:
-        if not upldvld(file.filename):
-            continue
-        else:
-            flash("Only .npy file formats to be uploaded !!")
-        rel_path = file.filename  # includes subfolder
-        filepath = os.path.join(upload_dir, rel_path)
-        os.makedirs(os.path.dirname(filepath), exist_ok=True)
-        file.save(filepath)
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'],file.filename) #config the path in computer where file to be saved
+    file.save(filepath)
 
     #calling and executing the cnn model in order to get prdeiction results and capturing the output as text
-    res=subprocess.run(['python','predictor.py',upload_dir],capture_output=True, text=True)
-    prediction=res.stdout.strip()
-
+    res=subprocess.run(['python','predictor.py',filepath],capture_output=True,text=True) 
+    prediction=res.stdout
     #lets log the outputs we've got
     with open('predic_logs.csv',mode='a',newline='') as logfile:
         logger=csv.writer(logfile)
-        logger.writerow([folder_name,prediction,datetime.now().strftime("%D %H:%M")])
+        flnm=file.filename
+        logger.writerow([file.filename,prediction,datetime.now().strftime("%D %H:%M")])
 
     # flash("Results fetched successfully")
     flash("Predictions Generated successfully ! ")
-    return render_template('results_pg.html',prediction=prediction,flnm=folder_name) #leading to the results page with the prediciton rsults
+    return render_template('results_pg.html',prediction=prediction,flnm=flnm) #leading to the results page with the prediciton rsults
+
+# HANDLES THE FOLDER
+
+# @app.route('/Predict_M_Sys/static/uploads/',methods=['POST'])
+# def upload_files():
+#     file = request.files.getlist('files')
+#     if not file or file[0].filename == '': #if the file uploaded is of no nAme then return error and redirect
+#         flash("No folder selected!")
+#         return redirect('/')
+
+#     # Generate a unique folder name (optional: use timestamp or user) 
+#     folder_name = "latest_upload"+datetime.now().strftime("%D %H:%M")
+#     upload_dir = os.path.join(app.config['UPLOAD_FOLDER'], folder_name)
+
+#     # Clear if already exists
+#     if os.path.exists(upload_dir):
+#         import shutil
+#         shutil.rmtree(upload_dir)
+#     os.makedirs(upload_dir, exist_ok=True)
+
+#     # Save all files in same relative structure 
+#     for file in file:
+#         if not upldvld(file.filename):
+#             continue
+#         else:
+#             flash("Only .npy file formats to be uploaded !!")
+#         rel_path = file.filename  # includes subfolder
+#         filepath = os.path.join(upload_dir, rel_path)
+#         os.makedirs(os.path.dirname(filepath), exist_ok=True)
+#         file.save(filepath)
+
+#     #calling and executing the cnn model in order to get prdeiction results and capturing the output as text
+#     res=subprocess.run(['python','predictor.py',upload_dir],capture_output=True, text=True)
+#     prediction=res.stdout.strip()
+
+#     #lets log the outputs we've got
+#     with open('predic_logs.csv',mode='a',newline='') as logfile:
+#         logger=csv.writer(logfile)
+#         logger.writerow([folder_name,prediction,datetime.now().strftime("%D %H:%M")])
+
+#     # flash("Results fetched successfully")
+#     flash("Predictions Generated successfully ! ")
+#     return render_template('results_pg.html',prediction=prediction,flnm=folder_name) #leading to the results page with the prediciton rsults
 
 @app.route('/metrics')
 def model_metrics():
