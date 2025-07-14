@@ -8,6 +8,7 @@ app.secret_key="ir-key"
 
 UPLOAD_FOLDER='static/uploads'
 app.config['UPLOAD_FOLDER']=UPLOAD_FOLDER
+os.makedirs('static/uploads', exist_ok=True)
 
 #upload validater #DAY10
 ALLOWED_EXTENS=['npy']

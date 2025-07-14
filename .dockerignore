@@ -1,5 +1,4 @@
 tfvirt/
-static/
 !static/images/confusion_matrix.jpg
 !static/images/logo.jpg
 !static/images/gear.svg
