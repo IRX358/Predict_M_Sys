@@ -88,9 +88,11 @@ fileElem.addEventListener('change', () => {
     <script>
     const form = document.querySelector('form');
     const spinner = document.querySelector('.loader');
+    const bdy =document.body;
 
     form.addEventListener('submit', () => {
         spinner.style.display = 'block';
+        bdy.style.backgroundColor="rgba(255, 255, 255, 0.8)";
     });
     </script>
   </main>
