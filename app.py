@@ -10,7 +10,7 @@ UPLOAD_FOLDER='static/uploads'
 app.config['UPLOAD_FOLDER']=UPLOAD_FOLDER
 
 #upload validater #DAY10
-ALLOWED_EXTENS=['png','jpg','jpeg']
+ALLOWED_EXTENS=['npy']
 def upldvld(filename):
     is_vaild='.'in filename and filename.rsplit('.',1)[1].lower() in ALLOWED_EXTENS
     return is_vaild
@@ -72,6 +72,8 @@ def upload_files():
     for file in file:
         if not upldvld(file.filename):
             continue
+        else:
+            flash("Only .npy file formats to be uploaded !!")
         rel_path = file.filename  # includes subfolder
         filepath = os.path.join(upload_dir, rel_path)
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
