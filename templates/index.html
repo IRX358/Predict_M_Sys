@@ -85,31 +85,13 @@ fileElem.addEventListener('change', () => {
         </ul>
         <h4> Generating Prediction ... </h4>
     </div>
-<!-- <div id="lding"></div> -->
     <script>
-        const form = document.getElementById('upload-form');
-        const loader = document.querySelector('.loader');
+    const form = document.querySelector('form');
+    const spinner = document.querySelector('.loader');
 
-        form.addEventListener('submit', (e) => {
-          e.preventDefault();
-          loader.style.display = 'block';
-
-          const formData = new FormData(form);
-
-          fetch(form.action, {
-            method: 'POST',
-            body: formData
-          })
-          .then(response => response.text())
-          .then(data => {
-            loader.style.display = 'none';
-            document.body.innerHTML = data;
-          })
-          .catch(() => {
-            loader.style.display = 'none';
-            alert('Something went wrong !!');
-          });
-        });
+    form.addEventListener('submit', () => {
+        spinner.style.display = 'block';
+    });
     </script>
   </main>
 
