@@ -1,145 +1,158 @@
-# predictor.py
-
+import os
 import sys
 import numpy as np
-import tensorflow as tf
 import librosa
-import librosa.display
-import matplotlib.pyplot as plt
-from PIL import Image
-import io
-from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_score, confusion_matrix
-import json
-import os
+import tensorflow as tf
+from tensorflow.keras.saving import register_keras_serializable  # Required for Lambda
 
-# Configuration - adjust as needed
-MODEL_PATH = 'mobilenet_vibration_classifier1.keras'
-IMG_HEIGHT = 128
-IMG_WIDTH = 128
-METRICS_JSON = 'model_metrics.json'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # Suppress warnings
 
-def signal_to_spectrogram_image(sig, fs=2500):
-    # Convert 1D signal to grayscale spectrogram image (matching training preprocessing)
-    S = librosa.stft(sig, n_fft=256, hop_length=128)
-    S_dB = librosa.amplitude_to_db(np.abs(S), ref=np.max)
-    plt.figure(figsize=(2.5,2.5))
-    librosa.display.specshow(S_dB, sr=fs, hop_length=128, cmap='gray')
-    plt.axis('off')
-    plt.tight_layout()
-    buf = io.BytesIO()
-    plt.savefig(buf, bbox_inches='tight', pad_inches=0)
-    plt.close()
-    buf.seek(0)
-    img = Image.open(buf).convert('L')  # grayscale
-    buf.close()
-    img = img.resize((IMG_WIDTH, IMG_HEIGHT))
-    img_array = np.array(img)
-    return img_array
+# Constants
+FS = 2500  # Sampling frequency
+IMG_HEIGHT, IMG_WIDTH = 128, 128  # Image dimensions for model input
+MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "mobilenet_vibration_classifier1.keras")
 
-def predict_single(filepath, model):
-    sig = np.load(filepath)
-    img = signal_to_spectrogram_image(sig)
-    img = img.astype(np.float32) / 255.0
-    img = np.expand_dims(img, axis=-1)  # add grayscale channel
-    img = np.expand_dims(img, axis=0)   # add batch dim
-    pred_prob = model.predict(img)[0][0]
-    return 'normal' if pred_prob <= 0.5 else 'faulty'
+# ========== REGISTERED FUNCTION ========== #
+@register_keras_serializable()
+def gray_to_rgb(x):
+    """Convert grayscale image to RGB by duplicating channels"""
+    return tf.image.grayscale_to_rgb(x)
 
-def load_metrics_json():
-    if os.path.exists(METRICS_JSON):
-        with open(METRICS_JSON, 'r') as f:
-            return json.load(f)
-    else:
-        return None
-
-def compute_and_save_metrics(model, test_folder):
+# ========== SIGNAL PROCESSING ========== #
+def npy_to_mel_spectrogram_image(signal):
     """
-    Compute metrics on a directory structured as:
-    test_folder/
-       normal/*.npy
-       fault/*.npy
-
-    Saves metrics json to METRICS_JSON file.
+    Convert 1D vibration signal to mel spectrogram image
+    Args:
+        signal: 1D numpy array containing vibration data
+    Returns:
+        Preprocessed image tensor ready for model prediction
     """
+    # Compute mel spectrogram (note 'y=' keyword argument)
+    S = librosa.feature.melspectrogram(y=signal, sr=FS, n_mels=128, fmax=FS//2)
+    
+    # Convert to dB scale
+    S_dB = librosa.power_to_db(S, ref=np.max)
+    
+    # Normalize to 0-1 range
+    img = (S_dB - S_dB.min()) / (S_dB.max() - S_dB.min())
+    
+    # Flip vertically (librosa displays low freqs at bottom)
+    img = np.flip(img, axis=0)
+    
+    # Add channel dimension (grayscale)
+    img = np.expand_dims(img, axis=-1)
+    
+    # Resize to model input dimensions
+    img_resized = tf.image.resize(img, [IMG_HEIGHT, IMG_WIDTH]).numpy()
+    
+    # Add batch dimension and ensure float32
+    return np.expand_dims(img_resized, axis=0).astype(np.float32)
 
-    classes = ['normal', 'fault']
-    label_map = {cls: i for i, cls in enumerate(classes)}
-    X_images = []
-    y_true = []
-
-    for cls in classes:
-        cls_folder = os.path.join(test_folder, cls)
-        if not os.path.isdir(cls_folder):
-            continue
-        for fname in os.listdir(cls_folder):
-            if fname.endswith('.npy'):
-                filepath = os.path.join(cls_folder, fname)
-                sig = np.load(filepath)
-                img = signal_to_spectrogram_image(sig)
-                X_images.append(img)
-                y_true.append(label_map[cls])
-
-    if len(X_images) == 0:
-        raise RuntimeError("No test files found.")
-
-    X_images = np.array(X_images).astype(np.float32) / 255.0
-    X_images = np.expand_dims(X_images, axis=-1)  # grayscale channel
-
-    y_true = np.array(y_true)
-
-    y_pred_probs = model.predict(X_images).flatten()
-    y_pred = (y_pred_probs > 0.5).astype(int)
-
-    acc = accuracy_score(y_true, y_pred)
-    f1 = f1_score(y_true, y_pred)
-    prec = precision_score(y_true, y_pred)
-    rec = recall_score(y_true, y_pred)
-    cm = confusion_matrix(y_true, y_pred).tolist()  # convert to nested list for JSON
-
-    metrics = {
-        'accuracy': round(acc, 4),
-        'precision': round(prec, 4),
-        'recall': round(rec, 4),
-        'f1_score': round(f1, 4),
-        'confusion_matrix': cm
-    }
-
-    # Save to JSON file
-    with open(METRICS_JSON, 'w') as f:
-        json.dump(metrics, f, indent=4)
-
-    return metrics
-
-def main():
-    # Usage:
-    #   For single prediction:
-    #     python predictor.py path/to/single_file.npy
-    #   To compute metrics on a test folder:
-    #     python predictor.py compute_metrics path/to/test_folder
-
-    model = tf.keras.models.load_model(MODEL_PATH)
-
-    if len(sys.argv) < 2:
-        print("Usage:")
-        print("  For single prediction:")
-        print("    python predictor.py path/to/file.npy")
-        print("  To compute metrics on test data folder:")
-        print("    python predictor.py compute_metrics path/to/test_folder")
+# ========== MODEL HANDLING ========== #
+def load_model():
+    """
+    Load the pre-trained vibration classifier model
+    Returns:
+        Loaded Keras model
+    Raises:
+        SystemExit: If model file is not found
+    """
+    if not os.path.exists(MODEL_PATH):
+        print(f"[ERROR] Model file not found at: {MODEL_PATH}")
+        print("Please ensure the model file exists at this location.")
+        sys.exit(1)
+        
+    try:
+        model = tf.keras.models.load_model(
+            MODEL_PATH,
+            custom_objects={"gray_to_rgb": gray_to_rgb},
+            compile=False
+        )
+        return model
+    except Exception as e:
+        print(f"[ERROR] Failed to load model: {str(e)}")
         sys.exit(1)
 
-    if sys.argv[1] == 'compute_metrics':
-        if len(sys.argv) != 3:
-            print("Error: Test folder path required.")
-            sys.exit(1)
-        test_folder = sys.argv[2]
-        metrics = compute_and_save_metrics(model, test_folder)
-        print("Metrics computed and saved to", METRICS_JSON)
-        print(json.dumps(metrics, indent=4))
-    else:
-        # Single prediction case
-        file_path = sys.argv[1]
-        pred = predict_single(file_path, model)
-        print(pred)  # For your flask app to capture this output as normal/faulty
+# ========== PREDICTION ========== #
+def predict_npy_file(model, npy_path):
+    """
+    Make prediction on a single .npy file
+    Args:
+        model: Loaded Keras model
+        npy_path: Path to .npy file
+    Returns:
+        tuple: (prediction_label, confidence_score)
+    """
+    try:
+        signal = np.load(npy_path)
+        if len(signal.shape) != 1:
+            print(f"[WARNING] Expected 1D signal in {os.path.basename(npy_path)}, got shape {signal.shape}")
+            
+        image_tensor = npy_to_mel_spectrogram_image(signal)
+        prob = model.predict(image_tensor, verbose=0)[0][0]
+        
+        label = "NORMAL" if prob < 0.5 else "FAULT"
+        confidence = float(prob) if label == "FAULT" else 1 - float(prob)
+        
+        return label, round(confidence, 4)
+        
+    except Exception as e:
+        print(f"[ERROR] Failed to process {os.path.basename(npy_path)}: {str(e)}")
+        return "ERROR", 0.0
 
-if __name__ == '__main__':
-    main()
+# ========== MAIN FUNCTION ========== #
+def main(input_path):
+    """
+    Main entry point for vibration classification
+    Args:
+        input_path: Path to .npy file or directory containing .npy files
+    """
+    if not input_path:
+        print("Usage: python predict_vibration_v2.py <.npy file or folder>")
+        return
+        
+    input_path = os.path.abspath(input_path)
+    
+    try:
+        model = load_model()
+    except Exception as e:
+        print(f"[ERROR] Model loading failed: {str(e)}")
+        return
+
+    # Single file case
+    if os.path.isfile(input_path) and input_path.lower().endswith('.npy'):
+        label, confidence = predict_npy_file(model, input_path)
+        print(f"{os.path.basename(input_path)} → {label} (confidence: {confidence:.3f})")
+        return f"{label}"
+    
+    # Directory case
+    elif os.path.isdir(input_path):
+        npy_files = sorted(
+            f for f in os.listdir(input_path) 
+            if f.lower().endswith('.npy')
+        )
+        
+        if not npy_files:
+            print(f"[WARNING] No .npy files found in: {input_path}")
+            return
+            
+        print(f"Found {len(npy_files)} .npy files in directory")
+        print("=" * 60)
+        
+        for f in npy_files:
+            full_path = os.path.join(input_path, f)
+            label, confidence = predict_npy_file(model, full_path)
+            print(f"{f} → {label} (confidence: {confidence:.3f})")
+            return f"{label}"
+    
+    else:
+        print(f"[ERROR] Invalid path: {input_path}")
+        print("Please provide either a .npy file or directory containing .npy files")
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Vibration Classifier Tool")
+        print("Usage: python predict_vibration_v2.py <path_to_npy_file_or_directory>")
+        sys.exit(0)
+        
+    main(sys.argv[1])
