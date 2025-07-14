@@ -30,4 +30,4 @@ EXPOSE 10000
 
 # === Run the Flask App with Gunicorn ===
 # NOTE: "app:app" means app.py contains 'app = Flask(_name_)'
-CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:10000"]
+CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:10000","--reload","--timeout","180","--workers","2","--threads","2"]

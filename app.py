@@ -2,8 +2,10 @@ import os , subprocess ,json ,csv
 from flask import Flask,render_template,request,redirect,flash,url_for
 from datetime import datetime
 
-
 app=Flask(__name__)
+
+app.config['DEBUG']=True
+app.config['DEBUG'] = os.environ.get('FLASK_DEBUG', 'false').lower() == 'true'
 app.secret_key="ir-key"
 
 UPLOAD_FOLDER='static/uploads'
