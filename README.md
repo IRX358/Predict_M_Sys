@@ -147,4 +147,4 @@ http://127.0.0.1:5000
 ---
 
 >  © 2025 Irfan IR || 
-            Built with great MOOD😎 , EXCITEMENT🤩 and CURIOSITY🤔
+            Built with CURIOSITY
